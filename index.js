@@ -1,7 +1,7 @@
 // ============================================================
 //  Cloudflare Worker – جایگزین کامل data.php
 // ============================================================
-
+// First deploy trigger
 const SECRET_TOKEN = 'clash2025secure';
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
