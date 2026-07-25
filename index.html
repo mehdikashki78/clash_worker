@@ -411,6 +411,19 @@
             align-items: center;
             gap: 3px;
             flex-wrap: wrap;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            cursor: pointer;
+        }
+        .account-card .username .uname-link {
+            color: #0f172a;
+            text-decoration: none;
+            transition: color 0.2s;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+            pointer-events: none;
         }
         .account-card .username .at {
             color: var(--color-text-muted);
@@ -1289,8 +1302,15 @@
 
         function openTwitterProfile(username) {
             if (!username) return;
-            // مستقیم تو همون صفحه redirect کن تا context menu مرورگر باز نشه
-            window.location.replace('https://x.com/' + username);
+            // روش 1: سعی کن با intent اپ X/Twitter رو باز کنی (اگه نصب باشه)
+            try {
+                var intentUrl = 'intent://x.com/' + username + '#Intent;scheme=https;package=com.twitter.android;end';
+                window.location.href = intentUrl;
+                return;
+            } catch (e) { /* ignore */ }
+            // روش 2: fallback - مستقیم redirect
+            try { window.location.replace('https://x.com/' + username); }
+            catch (e) { window.location.href = 'https://x.com/' + username; }
         }
 
         // ===== RATINGS =====
@@ -1653,12 +1673,12 @@
             card.innerHTML = `
                 ${soldHtml}
                 <div class="card-top">
-                    <div class="username">
+                    <div class="username" onclick="openTwitterProfile('${username}')" title="Open @${username} on X">
                         <span class="at">@</span>
-                        <a href="#" onclick="event.preventDefault();openTwitterProfile('${username}');" title="Open @${username} on X">${username}</a>
+                        <span class="uname-link">${username}</span>
                         ${acc.verified && !isSold ? `<span class="verified-badge">✅</span>` : ''}
                     </div>
-                    <div class="twitter-icon" onclick="openTwitterProfile('${username}')" title="Open @${username} on X">🐦</div>
+                    <div class="twitter-icon" onclick="event.stopPropagation();openTwitterProfile('${username}')" title="Open @${username} on X" style="-webkit-touch-callout:none;user-select:none;">🐦</div>
                 </div>
                 <div class="followers">👥 <strong>${followers}</strong></div>
                 <div class="price-row">
@@ -1705,7 +1725,7 @@
                 html += `
                     <div class="list-item">
                         <div class="item-info">
-                            <span class="uname"><a href="#" onclick="event.preventDefault();openTwitterProfile('${escapeHtml(acc.username)}');">@${escapeHtml(acc.username)}</a></span>
+                            <span class="uname" onclick="openTwitterProfile('${escapeHtml(acc.username)}')" style="cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">@${escapeHtml(acc.username)}</span>
                             <span class="fcount">👥 ${formatNumber(acc.followers)}</span>
                             <span class="iprice">${fmtPrice(finalPrice)}</span>
                             <span class="iage">🕒 ${age.display}</span>
