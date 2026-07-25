@@ -1316,17 +1316,13 @@
 
         function checkOnX(username) {
             if (!username) return;
-            // سعی کن اپ X رو باز کنی (اگه نصب باشه)
             var target = 'https://x.com/' + username;
+            // ساده‌ترین روش: window.open که خودِ WebView هندل میکنه
+            // تو WebView معمولی → تو browser باز میشه
+            // تو اپ‌هایی که universal link ساپورت میکنن → مستقیم اپ X باز میشه
             try {
-                var intentUrl = 'intent://x.com/' + username + '#Intent;scheme=https;package=com.twitter.android;end';
-                window.location.href = intentUrl;
-                // اگه اپ X باز نشد، fallback بعد 800ms
-                setTimeout(function() {
-                    try { window.location.replace(target); } catch (e) {}
-                }, 800);
+                window.open(target, '_blank', 'noopener,noreferrer');
             } catch (e) {
-                // fallback مستقیم به مرورگر
                 try { window.location.replace(target); } catch (err) { window.location.href = target; }
             }
         }
