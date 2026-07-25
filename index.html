@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Twitter Shop Pro | Account Store</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <style>
+        /* ============================================================
+           LIGHT THEME — ساده، روان، بهینه
+           ============================================================ */
+        :root {
+            --bg-body: #f0f4f8;
+            --bg-container: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --bg-header: #ffffff;
+            --bg-tab: #f1f5f9;
+            --bg-filter: #f8fafc;
+            --bg-stats: rgba(255, 255, 255, 0.6);
+            --bg-admin: #f8fafc;
+            --color-text: #0f172a;
+            --color-text-dim: #334155;
+            --color-text-muted: #64748b;
+            --color-border: #e2e8f0;
+            --color-accent: #d97706;
+            --color-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --color-btn-gold: #d97706;
+            --color-btn-green: #059669;
+            --color-btn-purple: #7c3aed;
+            --color-btn-blue: #2563eb;
+            --color-btn-red: #dc2626;
+            --color-toast-bg: #ffffff;
+            --color-toast-text: #0f172a;
+            --color-toast-border: #d97706;
+            --color-toast-error-border: #ef4444;
+            --color-loader-bg: #f0f4f8;
+            --color-loader-title: #d97706;
+            --color-loader-sub: #64748b;
+            --color-loader-track: rgba(0, 0, 0, 0.06);
+            --color-loader-fill: #d97706;
+            --color-stats-bg: rgba(255, 255, 255, 0.5);
+            --color-filter-bg: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: var(--bg-body);
+            min-height: 100vh;
+            padding: 10px;
+            color: var(--color-text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 3px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--bg-container);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--color-shadow);
+            padding: 0 0 20px 0;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--bg-header);
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .header h1 {
+            color: #d97706;
+            font-size: 1.4rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header h1 small {
+            font-size: 0.5rem;
+            color: #b45309;
+            font-weight: 400;
+            letter-spacing: 1px;
+            opacity: 0.7;
+        }
+        .header h1 .pro-badge {
+            font-size: 0.4rem;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: #fff;
+            font-weight: 700;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 5px 14px;
+            border-radius: 30px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.65rem;
+        }
+        .btn:active {
+            transform: scale(0.94);
+        }
+        .btn-gold {
+            background: #d97706;
+            color: #fff;
+        }
+        .btn-gold:hover {
+            background: #b45309;
+        }
+        .btn-purple {
+            background: #7c3aed;
+            color: #fff;
+        }
+        .btn-purple:hover {
+            background: #6d28d9;
+        }
+        .btn-red {
+            background: #dc2626;
+            color: #fff;
+        }
+        .btn-red:hover {
+            background: #b91c1c;
+        }
+        .btn-green {
+            background: #059669;
+            color: #fff;
+        }
+        .btn-green:hover {
+            background: #047857;
+        }
+        .btn-blue {
+            background: #2563eb;
+            color: #fff;
+        }
+        .btn-blue:hover {
+            background: #1d4ed8;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #d9770666;
+            color: #d97706;
+        }
+        .btn-outline:hover {
+            background: #d9770610;
+            border-color: #d97706;
+        }
+        .btn-sm {
+            padding: 2px 8px;
+            font-size: 0.5rem;
+        }
+        .btn-danger {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #dc2626;
+        }
+        .btn-danger:hover {
+            background: rgba(220, 38, 38, 0.2);
+        }
+
+        /* ===== SYNC STATUS ===== */
+        .sync-status {
+            background: var(--bg-tab);
+            padding: 4px 14px;
+            text-align: center;
+            font-size: 0.5rem;
+            color: var(--color-text-dim);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .sync-status .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #059669;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8);
+            }
+        }
+        .sync-status .dot.offline {
+            background: #dc2626;
+            animation: none;
+        }
+
+        /* ===== STATS BAR ===== */
+        .stats-bar {
+            display: flex;
+            gap: 10px;
+            padding: 6px 16px;
+            background: var(--bg-stats);
+            border-bottom: 1px solid var(--color-border);
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .stats-bar .stat-item {
+            text-align: center;
+            padding: 2px 6px;
+        }
+        .stats-bar .stat-item .stat-val {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #d97706;
+        }
+        .stats-bar .stat-item .stat-label {
+            font-size: 0.35rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar {
+            display: flex;
+            gap: 6px;
+            padding: 6px 16px;
+            flex-wrap: wrap;
+            align-items: center;
+            background: var(--bg-filter);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .filter-bar input,
+        .filter-bar select {
+            background: #ffffff;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 4px 8px;
+            color: var(--color-text);
+            font-size: 0.5rem;
+            outline: none;
+            transition: border 0.2s;
+            min-width: 60px;
+        }
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
+        }
+        .filter-bar input::placeholder {
+            color: var(--color-text-muted);
+        }
+        .filter-bar .btn {
+            padding: 2px 8px;
+            font-size: 0.45rem;
+        }
+        .filter-bar .price-range {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            font-size: 0.45rem;
+            color: var(--color-text-muted);
+        }
+        .filter-bar .price-range input {
+            width: 40px;
+            min-width: 30px;
+            padding: 2px 4px;
+            font-size: 0.45rem;
+        }
+
+        .shop-header {
+            padding: 10px 16px 4px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .shop-header h2 {
+            color: #d97706;
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .shop-header .count-badge {
+            background: rgba(217, 119, 6, 0.1);
+            border: 1px solid rgba(217, 119, 6, 0.2);
+            border-radius: 20px;
+            padding: 1px 10px;
+            font-size: 0.5rem;
+            color: #d97706;
+        }
+
+        /* ===== SHOP GRID ===== */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 10px 16px;
+        }
+
+        .shop-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px 16px;
+            color: var(--color-text-muted);
+        }
+        .shop-empty .big-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 6px;
+            opacity: 0.3;
+        }
+        .shop-empty h3 {
+            font-size: 0.9rem;
+            color: var(--color-text-dim);
+            margin-bottom: 4px;
+        }
+        .shop-empty p {
+            font-size: 0.65rem;
+            color: var(--color-text-muted);
+        }
+
+        /* ===== ACCOUNT CARD ===== */
+        .account-card {
+            background: var(--bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 10px 10px 10px 10px;
+            position: relative;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+            will-change: transform;
+        }
+        .account-card:hover {
+            transform: translateY(-3px);
+            border-color: #d97706;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+        }
+        .account-card.featured {
+            border-color: #7c3aed;
+            background: linear-gradient(160deg, #ffffff 0%, #f5f3ff 100%);
+        }
+        .account-card.featured::after {
+            content: '⭐ FEATURED';
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: #fff;
+            font-size: 0.35rem;
+            font-weight: 700;
+            padding: 1px 8px;
+            border-radius: 10px;
+            z-index: 2;
+            letter-spacing: 0.3px;
+        }
+
+        .account-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .account-card .username {
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        .account-card .username .at {
+            color: var(--color-text-muted);
+            font-weight: 400;
+            font-size: 0.5rem;
+        }
+        .account-card .username a {
+            color: #0f172a;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .account-card .username a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        .account-card .username .verified-badge {
+            color: #2563eb;
+            font-size: 0.6rem;
+        }
+        .account-card .twitter-icon {
+            font-size: 1rem;
+            color: #1d9bf0;
+            cursor: pointer;
+            transition: transform 0.2s;
+            opacity: 0.6;
+        }
+        .account-card .twitter-icon:hover {
+            transform: scale(1.1);
+            opacity: 1;
+        }
+
+        .account-card .followers {
+            font-size: 0.55rem;
+            color: var(--color-text-dim);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            position: relative;
+            z-index: 1;
+        }
+        .account-card .followers strong {
+            color: var(--color-text);
+            font-weight: 700;
+        }
+
+        .account-card .price-row {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .account-card .price-tag {
+            font-size: 1rem;
+            font-weight: 900;
+            color: #059669;
+        }
+        .account-card .price-tag .currency {
+            font-size: 0.5rem;
+            color: var(--color-text-muted);
+            font-weight: 400;
+        }
+        .account-card .price-tag.sale-price {
+            color: #dc2626;
+            text-decoration: line-through;
+            font-size: 0.65rem;
+            opacity: 0.5;
+        }
+        .account-card .price-tag.sale-new {
+            color: #d97706;
+            font-size: 0.85rem;
+        }
+        .account-card .sale-badge {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #fff;
+            font-size: 0.35rem;
+            font-weight: 700;
+            padding: 1px 6px;
+            border-radius: 8px;
+            animation: pulse-sale 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-sale {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .account-card .age-info {
+            font-size: 0.4rem;
+            color: var(--color-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .account-card .age-info .label {
+            color: var(--color-text-dim);
+        }
+        .account-card .age-info .age-value {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .account-card .stars {
+            display: flex;
+            gap: 2px;
+            font-size: 0.55rem;
+            position: relative;
+            z-index: 1;
+        }
+        .account-card .stars .star {
+            color: #d1d5db;
+            transition: color 0.2s;
+            user-select: none;
+            cursor: pointer;
+        }
+        .account-card .stars .star.filled {
+            color: #f59e0b;
+        }
+        .account-card .stars .star:hover {
+            transform: scale(1.15);
+        }
+        .account-card .stars .count {
+            font-size: 0.4rem;
+            color: var(--color-text-muted);
+            margin-left: 2px;
+        }
+
+        .account-card .card-actions {
+            display: flex;
+            gap: 3px;
+            margin-top: 3px;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+        }
+        .account-card .card-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 3px 4px;
+            font-size: 0.5rem;
+            min-width: 28px;
+            border-radius: 16px;
+        }
+
+        .account-card .sold-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            background: rgba(220, 38, 38, 0.9);
+            color: #fff;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.4rem;
+            font-weight: 700;
+            z-index: 4;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+        .account-card .sold-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(2px);
+            z-index: 3;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: #dc2626;
+            letter-spacing: 1px;
+        }
+        .account-card .sold-overlay span {
+            background: rgba(220, 38, 38, 0.06);
+            padding: 3px 14px;
+            border-radius: 20px;
+            border: 2px solid rgba(220, 38, 38, 0.15);
+        }
+        .account-card .sold-timer {
+            font-size: 0.4rem;
+            color: #dc2626;
+            opacity: 0.6;
+            margin-top: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== ADMIN PANEL ===== */
+        .admin-toggle-area {
+            padding: 4px 16px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .admin-panel {
+            background: var(--bg-admin);
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            border-radius: 1rem;
+            padding: 12px 16px;
+            margin: 0 16px 10px 16px;
+            display: none;
+            animation: slideDown 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+        .admin-panel.open {
+            display: block;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .admin-panel h3 {
+            color: #991b1b;
+            font-size: 0.7rem;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+            padding-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .admin-panel .form-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .admin-panel .form-row input,
+        .admin-panel .form-row select {
+            background: #ffffff;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 4px 10px;
+            color: var(--color-text);
+            font-size: 0.55rem;
+            flex: 1;
+            min-width: 60px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .admin-panel .form-row input:focus,
+        .admin-panel .form-row select:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.08);
+        }
+        .admin-panel .form-row input::placeholder {
+            color: var(--color-text-muted);
+        }
+        .admin-panel .form-row .btn {
+            flex: 0 1 auto;
+            padding: 4px 12px;
+            font-size: 0.55rem;
+        }
+        .admin-panel .form-row select {
+            min-width: 50px;
+        }
+        .admin-panel .form-row .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-size: 0.5rem;
+            color: var(--color-text-dim);
+        }
+        .admin-panel .form-row .checkbox-group input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            accent-color: #7c3aed;
+            flex: 0;
+            min-width: unset;
+            cursor: pointer;
+        }
+        .admin-panel .admin-list {
+            margin-top: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+        .admin-panel .admin-list .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 6px;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.5rem;
+            color: var(--color-text-dim);
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .admin-panel .admin-list .list-item .item-info {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .admin-panel .admin-list .list-item .item-info .uname {
+            color: #d97706;
+            font-weight: 700;
+            font-size: 0.55rem;
+        }
+        .admin-panel .admin-list .list-item .item-info .uname a {
+            color: #d97706;
+            text-decoration: none;
+        }
+        .admin-panel .admin-list .list-item .item-info .uname a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        .admin-panel .admin-list .list-item .item-info .fcount {
+            color: var(--color-text-dim);
+            font-size: 0.45rem;
+        }
+        .admin-panel .admin-list .list-item .item-info .iprice {
+            color: #059669;
+            font-weight: 700;
+            font-size: 0.5rem;
+        }
+        .admin-panel .admin-list .list-item .item-info .iage {
+            color: var(--color-text-muted);
+            font-size: 0.4rem;
+        }
+        .admin-panel .admin-list .list-item .item-info .ibadge {
+            font-size: 0.4rem;
+            padding: 1px 5px;
+            border-radius: 6px;
+        }
+        .admin-panel .admin-list .list-item .item-info .ibadge.verified {
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+        .admin-panel .admin-list .list-item .item-info .ibadge.sale {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(220, 38, 38, 0.2);
+        }
+        .admin-panel .admin-list .list-item .item-info .ibadge.featured {
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+            border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+        .admin-panel .admin-list .list-item .item-actions {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        .admin-panel .admin-list .list-item .item-actions .btn {
+            padding: 1px 6px;
+            font-size: 0.35rem;
+            border-radius: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--color-toast-bg);
+            color: var(--color-toast-text);
+            padding: 8px 16px;
+            border-radius: 30px;
+            border-right: 4px solid var(--color-toast-border);
+            z-index: 9999;
+            animation: toastFade 4s forwards;
+            max-width: 90%;
+            font-size: 0.7rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border);
+        }
+        .toast.error {
+            border-right-color: var(--color-toast-error-border);
+            color: #991b1b;
+        }
+        .toast.success {
+            border-right-color: #059669;
+            color: #065f46;
+        }
+        @keyframes toastFade {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(16px);
+                visibility: hidden;
+            }
+        }
+
+        /* ===== LOADING ===== */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-loader-bg);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #loadingOverlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--color-loader-track);
+            border-top-color: var(--color-loader-fill);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .loader-title {
+            margin-top: 18px;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--color-loader-title);
+            letter-spacing: 1px;
+        }
+        .loader-sub {
+            color: var(--color-loader-sub);
+            font-size: 0.6rem;
+            margin-top: 2px;
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+        .loader-bar-track {
+            margin-top: 16px;
+            width: 160px;
+            height: 3px;
+            background: var(--color-loader-track);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .loader-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--color-loader-fill);
+            border-radius: 4px;
+            animation: loadProgress 2.8s ease-in-out forwards;
+        }
+        @keyframes loadProgress {
+            0% {
+                width: 0%;
+            }
+            20% {
+                width: 20%;
+            }
+            50% {
+                width: 50%;
+            }
+            80% {
+                width: 80%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        .loader-version {
+            position: absolute;
+            bottom: 20px;
+            color: var(--color-loader-sub);
+            font-size: 0.4rem;
+            letter-spacing: 2px;
+            opacity: 0.5;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 10px 16px 2px 16px;
+            font-size: 0.4rem;
+            color: var(--color-text-muted);
+            border-top: 1px solid var(--color-border);
+            margin-top: 4px;
+        }
+        .footer a {
+            color: #d97706;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .shop-grid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            }
+        }
+        @media (max-width: 700px) {
+            body {
+                padding: 6px;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .header h1 small {
+                font-size: 0.4rem;
+            }
+            .shop-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .shop-header {
+                padding: 8px 10px 2px 10px;
+            }
+            .admin-panel {
+                margin: 0 8px 8px 8px;
+                padding: 10px 12px;
+            }
+            .admin-panel .form-row {
+                flex-direction: column;
+            }
+            .admin-panel .form-row input,
+            .admin-panel .form-row select {
+                min-width: 100%;
+                width: 100%;
+            }
+            .admin-panel .form-row .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .container {
+                border-radius: 1rem;
+            }
+            .header {
+                padding: 0.6rem 0.8rem;
+            }
+            .account-card .price-tag {
+                font-size: 0.85rem;
+            }
+            .filter-bar {
+                padding: 6px 10px;
+                gap: 4px;
+            }
+            .filter-bar input,
+            .filter-bar select {
+                min-width: 40px;
+                flex: 1;
+                font-size: 0.45rem;
+                padding: 3px 6px;
+            }
+            .filter-bar .price-range input {
+                width: 32px;
+                min-width: 24px;
+            }
+            .stats-bar {
+                gap: 4px;
+                padding: 4px 10px;
+            }
+            .stats-bar .stat-item .stat-val {
+                font-size: 0.7rem;
+            }
+            .stats-bar .stat-item .stat-label {
+                font-size: 0.3rem;
+            }
+        }
+        @media (max-width: 450px) {
+            .shop-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 6px;
+                padding: 6px 8px;
+            }
+            .header h1 {
+                font-size: 0.9rem;
+            }
+            .header-actions .btn {
+                font-size: 0.5rem;
+                padding: 3px 8px;
+            }
+            .account-card {
+                padding: 6px 6px 6px 6px;
+            }
+            .account-card .username {
+                font-size: 0.65rem;
+            }
+            .account-card .price-tag {
+                font-size: 0.75rem;
+            }
+            .account-card .card-actions .btn {
+                font-size: 0.4rem;
+                padding: 2px 3px;
+            }
+            .account-card .stars {
+                font-size: 0.45rem;
+            }
+            .filter-bar input,
+            .filter-bar select {
+                font-size: 0.4rem;
+                padding: 2px 4px;
+                min-width: 30px;
+            }
+            .filter-bar .price-range input {
+                width: 26px;
+                min-width: 20px;
+            }
+            .sync-status {
+                font-size: 0.4rem;
+                padding: 3px 10px;
+            }
+            .stats-bar .stat-item .stat-val {
+                font-size: 0.6rem;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .account-card:hover {
+                transform: none;
+            }
+            .btn:active {
+                transform: none;
+            }
+            .loader-spinner {
+                animation-duration: 2s;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOADING OVERLAY ===== -->
+    <div id="loadingOverlay">
+        <div class="loader-spinner"></div>
+        <div class="loader-title">Twitter Shop Pro</div>
+        <div class="loader-sub">Account Store</div>
+        <div class="loader-bar-track">
+            <div class="loader-bar-fill"></div>
+        </div>
+        <div class="loader-version">v6 · Optimized</div>
+    </div>
+
+    <!-- ===== MAIN APP ===== -->
+    <div class="container" id="app">
+        <div class="header">
+            <h1>🐦 Twitter Shop <small>Pro</small> <span class="pro-badge">⚡</span></h1>
+            <div class="header-actions">
+                <button class="btn btn-outline btn-sm" id="adminToggleBtn" onclick="toggleAdminPanel()">🔑 Admin</button>
+            </div>
+        </div>
+
+        <div class="sync-status">
+            <span class="dot" id="syncDot"></span>
+            <span id="syncText">Connecting...</span>
+            <span style="color:var(--color-text-muted);font-size:0.4rem;" id="accountCount">0 accounts</span>
+        </div>
+
+        <!-- STATS BAR -->
+        <div class="stats-bar" id="statsBar">
+            <div class="stat-item"><div class="stat-val" id="statTotal">0</div><div class="stat-label">Total</div></div>
+            <div class="stat-item"><div class="stat-val" id="statAvailable">0</div><div class="stat-label">Available</div></div>
+            <div class="stat-item"><div class="stat-val" id="statAvgPrice">$0</div><div class="stat-label">Avg Price</div></div>
+            <div class="stat-item"><div class="stat-val" id="statMaxFollowers">0</div><div class="stat-label">Max Followers</div></div>
+            <div class="stat-item"><div class="stat-val" id="statVerified">0</div><div class="stat-label">Verified</div></div>
+            <div class="stat-item"><div class="stat-val" id="statAvgRating">⭐0</div><div class="stat-label">Avg Rating</div></div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <input type="text" id="filterSearch" placeholder="🔍 Search..." oninput="applyFilters()" />
+            <select id="filterSort" onchange="applyFilters()">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="price-asc">Price ↑</option>
+                <option value="price-desc">Price ↓</option>
+                <option value="followers-desc">Most Followers</option>
+                <option value="followers-asc">Least Followers</option>
+                <option value="rating-desc">Top Rated</option>
+            </select>
+            <select id="filterStatus" onchange="applyFilters()">
+                <option value="all">All</option>
+                <option value="available">Available</option>
+                <option value="sold">Sold</option>
+            </select>
+            <select id="filterVerified" onchange="applyFilters()">
+                <option value="all">All</option>
+                <option value="verified">Verified</option>
+                <option value="unverified">Unverified</option>
+            </select>
+            <select id="filterSale" onchange="applyFilters()">
+                <option value="all">All</option>
+                <option value="sale">On Sale</option>
+            </select>
+            <div class="price-range">
+                <span>$</span>
+                <input type="number" id="priceMin" placeholder="Min" min="0" step="1" oninput="applyFilters()" />
+                <span>–</span>
+                <input type="number" id="priceMax" placeholder="Max" min="0" step="1" oninput="applyFilters()" />
+            </div>
+            <button class="btn btn-blue btn-sm" onclick="resetFilters()">↺</button>
+        </div>
+
+        <div class="shop-header">
+            <h2>📋 Accounts <span class="count-badge" id="liveCount">0</span></h2>
+            <span style="font-size:0.45rem;color:var(--color-text-muted);">⭐ Ratings</span>
+        </div>
+
+        <div class="shop-grid" id="shopGrid"></div>
+
+        <div class="admin-toggle-area">
+            <button class="btn btn-gold btn-sm" id="adminToggleBtn2" onclick="toggleAdminPanel()" style="display:none;">🔒 Close Admin</button>
+        </div>
+        <div class="admin-panel" id="adminPanel">
+            <h3>🔐 Admin — Add / Manage</h3>
+            <div class="form-row">
+                <input type="text" id="adminUsername" placeholder="Username" />
+                <input type="number" id="adminFollowers" placeholder="Followers" min="0" />
+                <input type="number" id="adminPrice" placeholder="Price" min="0" step="0.01" />
+                <select id="adminMonth">
+                    <option value="">Month</option>
+                    <option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option>
+                    <option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option>
+                    <option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option>
+                    <option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option>
+                </select>
+                <select id="adminYear">
+                    <option value="">Year</option>
+                </select>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="adminVerified" /> <label>✅</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="adminFeatured" /> <label>⭐</label>
+                </div>
+                <button class="btn btn-green" onclick="adminAddAccount()">➕</button>
+            </div>
+            <div class="form-row" style="margin-top:4px;">
+                <input type="text" id="adminEditId" placeholder="ID to edit" style="flex:0.4;min-width:50px;" />
+                <input type="number" id="adminEditPrice" placeholder="New Price" min="0" step="0.01" style="flex:0.4;min-width:50px;" />
+                <input type="number" id="adminEditFollowers" placeholder="New Followers" min="0" style="flex:0.4;min-width:50px;" />
+                <button class="btn btn-blue btn-sm" onclick="adminEditAccount()">✏️</button>
+            </div>
+            <h3 style="margin-top:8px;">📋 Manage</h3>
+            <div class="admin-list" id="adminList"></div>
+            <div style="margin-top:6px;font-size:0.4rem;color:var(--color-text-muted);border-top:1px solid var(--color-border);padding-top:4px;">
+                ⏳ Sold auto-delete 30 min · 🟢 Available · 🔴 Sold
+            </div>
+        </div>
+
+        <div class="footer">
+            🛒 Delivery guarantee | <a href="https://t.me/SiriAii" target="_blank">@SiriAii</a>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  CONFIG
+        // ============================================================
+        const SUPABASE_URL = 'https://tsuinkyntxlqtktnitbc.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_gfzNh_XxZSX55MkwldrFRw_f6GhCYHa';
+        const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const DATA_KEY = 'TWITTER_SHOP_PRO_DATA_V6';
+        const ADMIN_PASSWORD = 'admin1313';
+        const ADMIN_SESSION_KEY = 'TWITTER_SHOP_ADMIN_SESSION';
+        const REDIRECT_URL = 'https://t.me/SiriAii';
+        const AUTO_DELETE_MINUTES = 30;
+        const SYNC_INTERVAL = 8000;
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let accounts = [];
+        let adminMode = false;
+        let syncLoopRunning = false;
+        let lastSyncHash = '';
+        let isConnected = false;
+        let filteredAccounts = [];
+        let renderTimeout = null;
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        function toast(msg, type = '') {
+            const el = document.createElement('div');
+            el.className = 'toast' + (type ? ' ' + type : '');
+            el.textContent = msg;
+            document.body.appendChild(el);
+            setTimeout(() => { if (el.parentNode) el.remove(); }, 4000);
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function formatNumber(n) {
+            return Number(n).toLocaleString('en-US');
+        }
+
+        // فرمت قیمت: اگه عدد صحیح باشه $15، در غیر این صورت $15.50
+        function fmtPrice(n) {
+            const v = Number(n) || 0;
+            if (Number.isInteger(v)) return '$' + v;
+            return '$' + v.toFixed(2);
+        }
+
+        function ts() { return Date.now(); }
+
+        function timeRemaining(soldAt) {
+            const elapsed = ts() - soldAt;
+            const remaining = AUTO_DELETE_MINUTES * 60 * 1000 - elapsed;
+            if (remaining <= 0) return '0s';
+            const mins = Math.floor(remaining / 60000);
+            const secs = Math.floor((remaining % 60000) / 1000);
+            if (mins > 0) return mins + 'm ' + secs + 's';
+            return secs + 's';
+        }
+
+        function getAccountAge(accountCreatedAt) {
+            if (!accountCreatedAt) return { display: 'N/A', raw: 0 };
+            const now = ts();
+            const diff = now - accountCreatedAt;
+            if (diff < 0) return { display: '0s', raw: 0 };
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            const months = Math.floor(days / 30);
+            const years = Math.floor(days / 365);
+            let display = '';
+            if (years > 0) display += years + 'y ';
+            if (months > 0 && years < 2) display += (months % 12) + 'mo ';
+            if (days > 0 && years === 0) display += days + 'd ';
+            if (hours > 0 && days === 0) display += (hours % 24) + 'h ';
+            if (minutes > 0 && hours === 0 && days === 0) display += (minutes % 60) + 'm ';
+            if (seconds > 0 && minutes === 0 && hours === 0 && days === 0) display += seconds + 's';
+            if (!display) display = '0s';
+            return { display: display.trim(), raw: diff };
+        }
+
+        function formatDate(tsVal) {
+            if (!tsVal) return 'Unknown';
+            const d = new Date(tsVal);
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function toTimestampFromMonthYear(month, year) {
+            if (!month || !year) return ts();
+            const d = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, 1));
+            return d.getTime();
+        }
+
+        function populateYearDropdown() {
+            const sel = document.getElementById('adminYear');
+            if (!sel) return;
+            const currentYear = new Date().getFullYear();
+            sel.innerHTML = '<option value="">Year</option>';
+            for (let y = currentYear; y >= 2006; y--) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.textContent = y;
+                sel.appendChild(opt);
+            }
+        }
+
+        function openTwitterProfile(username) {
+            if (!username) return;
+            window.open(`https://x.com/${username}`, '_blank');
+        }
+
+        // ===== RATINGS =====
+        function getAverageRating(acc) {
+            if (!acc.ratings || acc.ratings.length === 0) return 0;
+            const sum = acc.ratings.reduce((s, r) => s + r, 0);
+            return sum / acc.ratings.length;
+        }
+
+        function getFinalPrice(acc) {
+            return acc.sale_price !== null && acc.sale_price !== undefined && acc.sale_price > 0 ? acc.sale_price : acc
+                .price || 0;
+        }
+
+        // ============================================================
+        //  SUPABASE
+        // ============================================================
+        async function loadShopData() {
+            try {
+                let { data, error } = await db
+                    .from('game_state')
+                    .select('data')
+                    .eq('id', 'main_game')
+                    .maybeSingle();
+                if (error && error.code !== 'PGRST116') throw error;
+                if (!data) {
+                    await db.from('game_state').insert({ id: 'main_game', data: { k: DATA_KEY, accounts: [] } });
+                    accounts = [];
+                    isConnected = true;
+                    return true;
+                }
+                const rawData = data.data;
+                if (rawData && rawData.k === DATA_KEY) {
+                    accounts = rawData.accounts || [];
+                } else {
+                    accounts = [];
+                }
+                let changed = false;
+                accounts.forEach(acc => {
+                    if (!acc.account_created_at) { acc.account_created_at = acc.created_at || ts();
+                        changed = true; }
+                    if (!acc.created_at) { acc.created_at = ts();
+                        changed = true; }
+                    if (acc.verified === undefined) { acc.verified = false;
+                        changed = true; }
+                    if (acc.featured === undefined) { acc.featured = false;
+                        changed = true; }
+                    if (acc.sale_price === undefined) { acc.sale_price = null;
+                        changed = true; }
+                    if (!acc.ratings) { acc.ratings = [];
+                        changed = true; }
+                });
+                const now = ts();
+                accounts = accounts.filter(acc => {
+                    if (acc.sold && acc.sold_at && (now - acc.sold_at) > AUTO_DELETE_MINUTES * 60 * 1000) {
+                        changed = true;
+                        return false;
+                    }
+                    return true;
+                });
+                if (changed) await saveShopData();
+                isConnected = true;
+                return true;
+            } catch (e) {
+                console.error('loadShopData error:', e);
+                isConnected = false;
+                return false;
+            }
+        }
+
+        async function saveShopData() {
+            try {
+                const payload = { k: DATA_KEY, accounts: accounts };
+                const { error } = await db
+                    .from('game_state')
+                    .upsert({ id: 'main_game', data: payload }, { onConflict: 'id' });
+                if (error) throw error;
+                return true;
+            } catch (e) {
+                console.error('saveShopData error:', e);
+                return false;
+            }
+        }
+
+        // ============================================================
+        //  CRUD
+        // ============================================================
+        async function addAccount(username, followers, price, accountCreatedAt, verified, featured) {
+            const newAcc = {
+                id: 'acc_' + ts() + '_' + Math.random().toString(36).substr(2, 4),
+                username: username.trim(),
+                followers: parseInt(followers) || 0,
+                price: parseFloat(price) || 0,
+                sold: false,
+                sold_at: null,
+                created_at: ts(),
+                account_created_at: accountCreatedAt || ts(),
+                verified: !!verified,
+                featured: !!featured,
+                sale_price: null,
+                ratings: []
+            };
+            accounts.unshift(newAcc);
+            const ok = await saveShopData();
+            if (ok) return newAcc;
+            accounts = accounts.filter(a => a.id !== newAcc.id);
+            return null;
+        }
+
+        async function editAccount(id, updates) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return false;
+            Object.assign(acc, updates);
+            const ok = await saveShopData();
+            if (!ok) { await loadShopData(); return false; }
+            return true;
+        }
+
+        async function toggleVerified(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return false;
+            acc.verified = !acc.verified;
+            const ok = await saveShopData();
+            if (!ok) { acc.verified = !acc.verified; return false; }
+            return true;
+        }
+
+        async function toggleFeatured(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return false;
+            acc.featured = !acc.featured;
+            const ok = await saveShopData();
+            if (!ok) { acc.featured = !acc.featured; return false; }
+            return true;
+        }
+
+        async function setSalePrice(id, salePrice) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return false;
+            acc.sale_price = salePrice !== null && salePrice >= 0 ? parseFloat(salePrice) : null;
+            const ok = await saveShopData();
+            if (!ok) { acc.sale_price = null; return false; }
+            return true;
+        }
+
+        async function markSold(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc || acc.sold) return false;
+            acc.sold = true;
+            acc.sold_at = ts();
+            const ok = await saveShopData();
+            if (!ok) { acc.sold = false;
+                acc.sold_at = null; return false; }
+            return true;
+        }
+
+        async function deleteAccount(id) {
+            const idx = accounts.findIndex(a => a.id === id);
+            if (idx === -1) return false;
+            const removed = accounts.splice(idx, 1);
+            const ok = await saveShopData();
+            if (!ok) { accounts.splice(idx, 0, removed[0]); return false; }
+            return true;
+        }
+
+        async function rateAccount(id, rating) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc || acc.sold) return false;
+            if (!acc.ratings) acc.ratings = [];
+            acc.ratings.push(rating);
+            if (acc.ratings.length > 50) acc.ratings = acc.ratings.slice(-50);
+            const ok = await saveShopData();
+            if (!ok) { acc.ratings.pop(); return false; }
+            return true;
+        }
+
+        // ============================================================
+        //  FILTERS
+        // ============================================================
+        function applyFilters() {
+            const search = document.getElementById('filterSearch').value.toLowerCase().trim();
+            const sort = document.getElementById('filterSort').value;
+            const status = document.getElementById('filterStatus').value;
+            const verified = document.getElementById('filterVerified').value;
+            const sale = document.getElementById('filterSale').value;
+            const priceMin = parseFloat(document.getElementById('priceMin').value) || 0;
+            const priceMax = parseFloat(document.getElementById('priceMax').value) || Infinity;
+
+            filteredAccounts = accounts.filter(acc => {
+                if (status === 'available' && acc.sold) return false;
+                if (status === 'sold' && !acc.sold) return false;
+                if (verified === 'verified' && !acc.verified) return false;
+                if (verified === 'unverified' && acc.verified) return false;
+                if (sale === 'sale' && (acc.sale_price === null || acc.sale_price === undefined)) return false;
+                if (search && !acc.username.toLowerCase().includes(search)) return false;
+                const price = getFinalPrice(acc);
+                if (price < priceMin) return false;
+                if (priceMax < Infinity && price > priceMax) return false;
+                return true;
+            });
+
+            filteredAccounts.sort((a, b) => {
+                switch (sort) {
+                    case 'newest':
+                        return b.created_at - a.created_at;
+                    case 'oldest':
+                        return a.created_at - b.created_at;
+                    case 'price-asc':
+                        return getFinalPrice(a) - getFinalPrice(b);
+                    case 'price-desc':
+                        return getFinalPrice(b) - getFinalPrice(a);
+                    case 'followers-desc':
+                        return b.followers - a.followers;
+                    case 'followers-asc':
+                        return a.followers - b.followers;
+                    case 'rating-desc':
+                        return getAverageRating(b) - getAverageRating(a);
+                    default:
+                        return 0;
+                }
+            });
+
+            // Debounced render
+            if (renderTimeout) cancelAnimationFrame(renderTimeout);
+            renderTimeout = requestAnimationFrame(() => {
+                renderShop();
+                updateStats();
+                renderTimeout = null;
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('filterSearch').value = '';
+            document.getElementById('filterSort').value = 'newest';
+            document.getElementById('filterStatus').value = 'all';
+            document.getElementById('filterVerified').value = 'all';
+            document.getElementById('filterSale').value = 'all';
+            document.getElementById('priceMin').value = '';
+            document.getElementById('priceMax').value = '';
+            applyFilters();
+        }
+
+        // ============================================================
+        //  STATS
+        // ============================================================
+        function updateStats() {
+            const total = accounts.length;
+            const available = accounts.filter(a => !a.sold).length;
+            const prices = accounts.filter(a => !a.sold).map(a => getFinalPrice(a));
+            const avgPrice = prices.length ? (prices.reduce((s, p) => s + p, 0) / prices.length) : 0;
+            const maxFollowers = accounts.reduce((max, a) => Math.max(max, a.followers), 0);
+            const verified = accounts.filter(a => a.verified).length;
+            const allRatings = accounts.flatMap(a => a.ratings || []);
+            const avgRating = allRatings.length ? (allRatings.reduce((s, r) => s + r, 0) / allRatings.length) : 0;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statAvailable').textContent = available;
+            document.getElementById('statAvgPrice').textContent = fmtPrice(avgPrice);
+            document.getElementById('statMaxFollowers').textContent = formatNumber(maxFollowers);
+            document.getElementById('statVerified').textContent = verified;
+            document.getElementById('statAvgRating').textContent = '⭐' + avgRating.toFixed(1);
+        }
+
+        // ============================================================
+        //  RENDER — بهینه‌شده با DocumentFragment
+        // ============================================================
+        function renderShop() {
+            const grid = document.getElementById('shopGrid');
+            const display = filteredAccounts.length ? filteredAccounts : accounts;
+            const live = display.filter(a => !a.sold);
+
+            if (display.length === 0) {
+                grid.innerHTML = `
+                    <div class="shop-empty">
+                        <span class="big-icon">📭</span>
+                        <h3>No accounts found</h3>
+                        <p>Try adjusting your filters</p>
+                    </div>
+                `;
+                document.getElementById('liveCount').textContent = '0';
+                return;
+            }
+
+            // استفاده از DocumentFragment برای رندرینگ سریع‌تر
+            const fragment = document.createDocumentFragment();
+            display.forEach(acc => {
+                const card = createCardElement(acc);
+                fragment.appendChild(card);
+            });
+
+            grid.innerHTML = '';
+            grid.appendChild(fragment);
+            document.getElementById('liveCount').textContent = live.length;
+        }
+
+        function createCardElement(acc) {
+            const isSold = acc.sold;
+            const username = escapeHtml(acc.username);
+            const followers = formatNumber(acc.followers);
+            const finalPrice = getFinalPrice(acc);
+            const originalPrice = acc.price || 0;
+            const isSale = acc.sale_price !== null && acc.sale_price !== undefined && acc.sale_price > 0 && !isSold;
+            const age = getAccountAge(acc.account_created_at);
+            const createdDate = formatDate(acc.account_created_at);
+            const avgRating = getAverageRating(acc);
+
+            const card = document.createElement('div');
+            card.className = 'account-card' + (acc.featured && !isSold ? ' featured' : '');
+            card.dataset.id = acc.id;
+
+            // ساخت HTML با innerHTML برای سرعت بیشتر
+            let starsHtml = '';
+            const full = Math.floor(avgRating);
+            for (let i = 1; i <= 5; i++) {
+                const cls = i <= full ? 'star filled' : 'star';
+                starsHtml += `<span class="${cls}" onclick="rateAccount('${acc.id}', ${i})">★</span>`;
+            }
+            const ratingCount = (acc.ratings || []).length;
+
+            let priceHtml = '';
+            if (isSale) {
+                priceHtml = `
+                    <span class="price-tag sale-price">${fmtPrice(originalPrice)}</span>
+                    <span class="price-tag sale-new">${fmtPrice(finalPrice)}</span>
+                `;
+            } else {
+                priceHtml = `<span class="price-tag">${fmtPrice(finalPrice)}</span>`;
+            }
+
+            let soldHtml = '';
+            if (isSold) {
+                const remaining = acc.sold_at ? timeRemaining(acc.sold_at) : '0s';
+                soldHtml = `
+                    <div class="sold-badge">Sold</div>
+                    <div class="sold-overlay"><span>⛔ Sold</span></div>
+                    <div class="sold-timer">⏳ ${remaining}</div>
+                `;
+            }
+
+            let actionButtons = '';
+            if (isSold) {
+                actionButtons = `<button class="btn btn-danger btn-sm" style="flex:1;justify-content:center;" disabled>⛔ Sold</button>`;
+            } else {
+                actionButtons = `
+                    <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="buyAccount('${acc.id}')">Buy</button>
+                `;
+            }
+
+            let adminButtons = '';
+            if (adminMode) {
+                adminButtons = `
+                    <button class="btn btn-red btn-sm" onclick="adminDelete('${acc.id}')" style="flex:0.3;justify-content:center;">🗑️</button>
+                    ${!isSold ? `<button class="btn btn-purple btn-sm" onclick="adminMarkSold('${acc.id}')" style="flex:0.3;justify-content:center;">💰</button>` : ''}
+                    ${!isSold ? `<button class="btn btn-blue btn-sm" onclick="adminToggleVerified('${acc.id}')" style="flex:0.3;justify-content:center;font-size:0.45rem;">${acc.verified ? '✅' : '⬜'}</button>` : ''}
+                    ${!isSold ? `<button class="btn btn-sm ${acc.featured ? 'btn-gold' : 'btn-outline'}" onclick="adminToggleFeatured('${acc.id}')" style="flex:0.3;justify-content:center;font-size:0.45rem;padding:2px 4px;">${acc.featured ? '⭐' : '☆'}</button>` : ''}
+                    ${!isSold ? `<button class="btn btn-sm btn-green" onclick="adminSetSale('${acc.id}')" style="flex:0.3;justify-content:center;font-size:0.45rem;padding:2px 4px;">🏷️</button>` : ''}
+                `;
+            }
+
+            card.innerHTML = `
+                ${soldHtml}
+                <div class="card-top">
+                    <div class="username">
+                        <span class="at">@</span>
+                        <a href="#" onclick="event.preventDefault();openTwitterProfile('${username}');" title="Open @${username} on X">${username}</a>
+                        ${acc.verified && !isSold ? `<span class="verified-badge">✅</span>` : ''}
+                    </div>
+                    <div class="twitter-icon" onclick="openTwitterProfile('${username}')" title="Open @${username} on X">🐦</div>
+                </div>
+                <div class="followers">👥 <strong>${followers}</strong></div>
+                <div class="price-row">
+                    ${priceHtml}
+                    ${isSale ? `<span class="sale-badge">🔥</span>` : ''}
+                </div>
+                <div class="age-info">
+                    <span class="label">📅</span>
+                    <span class="age-value">${createdDate}</span>
+                    <span class="label">🕒</span>
+                    <span class="age-value">${age.display}</span>
+                </div>
+                <div class="stars">
+                    ${starsHtml}
+                    <span class="count">(${ratingCount})</span>
+                </div>
+                <div class="card-actions">
+                    ${actionButtons}
+                    ${adminButtons}
+                </div>
+            `;
+
+            return card;
+        }
+
+        function renderAdminList() {
+            const container = document.getElementById('adminList');
+            if (accounts.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center;padding:8px;color:var(--color-text-muted);font-size:0.5rem;">No accounts</div>';
+                return;
+            }
+            let html = '';
+            for (const acc of accounts) {
+                const status = acc.sold ? '🔴' : '🟢';
+                const soldTime = acc.sold_at ? timeRemaining(acc.sold_at) : '—';
+                const age = getAccountAge(acc.account_created_at);
+                const avgRating = getAverageRating(acc);
+                const finalPrice = getFinalPrice(acc);
+                const badges = [];
+                if (acc.verified) badges.push('<span class="ibadge verified">✅</span>');
+                if (acc.featured) badges.push('<span class="ibadge featured">⭐</span>');
+                if (acc.sale_price !== null && acc.sale_price !== undefined) badges.push('<span class="ibadge sale">🔥</span>');
+                html += `
+                    <div class="list-item">
+                        <div class="item-info">
+                            <span class="uname"><a href="#" onclick="event.preventDefault();openTwitterProfile('${escapeHtml(acc.username)}');">@${escapeHtml(acc.username)}</a></span>
+                            <span class="fcount">👥 ${formatNumber(acc.followers)}</span>
+                            <span class="iprice">${fmtPrice(finalPrice)}</span>
+                            <span class="iage">🕒 ${age.display}</span>
+                            <span style="font-size:0.4rem;">⭐${avgRating.toFixed(1)}</span>
+                            ${badges.join(' ')}
+                            <span style="font-size:0.45rem;">${status}</span>
+                            ${acc.sold ? `<span style="font-size:0.35rem;color:#dc2626;">⏳ ${soldTime}</span>` : ''}
+                        </div>
+                        <div class="item-actions">
+                            ${!acc.sold ? `<button class="btn btn-purple btn-sm" onclick="adminMarkSold('${acc.id}')">💰</button>` : ''}
+                            <button class="btn btn-red btn-sm" onclick="adminDelete('${acc.id}')">🗑️</button>
+                            <button class="btn btn-blue btn-sm" onclick="adminToggleVerified('${acc.id}')">${acc.verified ? '✅' : '⬜'}</button>
+                            <button class="btn btn-sm ${acc.featured ? 'btn-gold' : 'btn-outline'}" onclick="adminToggleFeatured('${acc.id}')" style="font-size:0.35rem;">${acc.featured ? '⭐' : '☆'}</button>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        //  UI ACTIONS
+        // ============================================================
+        function openAdminPanel() {
+            // اگه قبلاً لاگین شده، مستقیم باز کن
+            if (sessionStorage.getItem(ADMIN_SESSION_KEY) === '1') {
+                adminMode = true;
+                showAdminPanel();
+                return;
+            }
+            const pw = prompt('🔐 Enter admin password:');
+            if (pw === null) return; // کنسل
+            if (pw !== ADMIN_PASSWORD) {
+                toast('Incorrect password', 'error');
+                return;
+            }
+            sessionStorage.setItem(ADMIN_SESSION_KEY, '1');
+            adminMode = true;
+            showAdminPanel();
+        }
+
+        function closeAdminPanel() {
+            adminMode = false;
+            sessionStorage.removeItem(ADMIN_SESSION_KEY);
+            hideAdminPanel();
+        }
+
+        function showAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const btn = document.getElementById('adminToggleBtn');
+            const btn2 = document.getElementById('adminToggleBtn2');
+            if (panel) panel.classList.add('open');
+            if (btn) btn.textContent = '🔒 Close';
+            if (btn2) { btn2.style.display = 'inline-flex'; btn2.textContent = '🔒 Close Admin'; }
+            renderAdminList();
+            applyFilters();
+        }
+
+        function hideAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            const btn = document.getElementById('adminToggleBtn');
+            const btn2 = document.getElementById('adminToggleBtn2');
+            if (panel) panel.classList.remove('open');
+            if (btn) btn.textContent = '🔑 Admin';
+            if (btn2) { btn2.style.display = 'none'; btn2.textContent = '🔒 Close Admin'; }
+            applyFilters();
+        }
+
+        function toggleAdminPanel() {
+            if (adminMode) {
+                closeAdminPanel();
+            } else {
+                openAdminPanel();
+            }
+        }
+        window.toggleAdminPanel = toggleAdminPanel;
+        window.openAdminPanel = openAdminPanel;
+        window.closeAdminPanel = closeAdminPanel;
+        window.showAdminPanel = showAdminPanel;
+        window.hideAdminPanel = hideAdminPanel;
+
+        window.adminAddAccount = async function() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const followers = document.getElementById('adminFollowers').value.trim();
+            const price = document.getElementById('adminPrice').value.trim();
+            const month = document.getElementById('adminMonth').value;
+            const year = document.getElementById('adminYear').value;
+            const verified = document.getElementById('adminVerified').checked;
+            const featured = document.getElementById('adminFeatured').checked;
+
+            if (!username) return toast('Enter username', 'error');
+            if (!followers || parseInt(followers) < 0) return toast('Invalid followers', 'error');
+            if (!price || parseFloat(price) < 0) return toast('Invalid price', 'error');
+
+            let accountCreatedAt = ts();
+            if (month && year) accountCreatedAt = toTimestampFromMonthYear(month, year);
+
+            const result = await addAccount(username, followers, price, accountCreatedAt, verified, featured);
+            if (result) {
+                document.getElementById('adminUsername').value = '';
+                document.getElementById('adminFollowers').value = '';
+                document.getElementById('adminPrice').value = '';
+                document.getElementById('adminMonth').value = '';
+                document.getElementById('adminYear').value = '';
+                document.getElementById('adminVerified').checked = false;
+                document.getElementById('adminFeatured').checked = false;
+                toast(`✅ @${username} added`, 'success');
+                applyFilters();
+                renderAdminList();
+                updateStats();
+                updateSyncUI();
+            } else {
+                toast('❌ Error', 'error');
+            }
+        };
+
+        window.adminEditAccount = async function() {
+            const id = document.getElementById('adminEditId').value.trim();
+            const newPrice = document.getElementById('adminEditPrice').value.trim();
+            const newFollowers = document.getElementById('adminEditFollowers').value.trim();
+
+            if (!id) return toast('Enter account ID', 'error');
+
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return toast('Account not found', 'error');
+
+            const updates = {};
+            if (newPrice) updates.price = parseFloat(newPrice);
+            if (newFollowers) updates.followers = parseInt(newFollowers);
+
+            if (Object.keys(updates).length === 0) return toast('No changes', 'error');
+
+            const ok = await editAccount(id, updates);
+            if (ok) {
+                document.getElementById('adminEditId').value = '';
+                document.getElementById('adminEditPrice').value = '';
+                document.getElementById('adminEditFollowers').value = '';
+                toast(`✅ @${acc.username} updated`, 'success');
+                applyFilters();
+                renderAdminList();
+                updateStats();
+                updateSyncUI();
+            } else {
+                toast('❌ Error', 'error');
+            }
+        };
+
+        window.adminToggleVerified = async function(id) {
+            const ok = await toggleVerified(id);
+            if (ok) { toast('✅ Toggled', 'success');
+                applyFilters();
+                renderAdminList();
+                updateStats(); } else toast('❌ Error', 'error');
+        };
+
+        window.adminToggleFeatured = async function(id) {
+            const ok = await toggleFeatured(id);
+            if (ok) { toast('⭐ Toggled', 'success');
+                applyFilters();
+                renderAdminList(); } else toast('❌ Error', 'error');
+        };
+
+        window.adminSetSale = async function(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return toast('Not found', 'error');
+            const currentSale = acc.sale_price !== null && acc.sale_price !== undefined ? acc.sale_price : '';
+            const input = prompt('Sale price (USD) or empty to remove:', currentSale);
+            if (input === null) return;
+            const salePrice = input.trim() === '' ? null : parseFloat(input);
+            if (salePrice !== null && (isNaN(salePrice) || salePrice < 0)) return toast('Invalid price', 'error');
+            const ok = await setSalePrice(id, salePrice);
+            if (ok) { toast(salePrice !== null ? `🔥 $${salePrice}` : '✅ Removed', 'success');
+                applyFilters();
+                renderAdminList(); } else toast('❌ Error', 'error');
+        };
+
+        window.adminMarkSold = async function(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return toast('Not found', 'error');
+            if (acc.sold) return toast('Already sold', 'error');
+            if (!confirm(`Mark @${acc.username} as sold?`)) return;
+            const ok = await markSold(id);
+            if (ok) { toast(`💰 @${acc.username} sold`, 'success');
+                applyFilters();
+                renderAdminList();
+                updateStats(); } else toast('❌ Error', 'error');
+        };
+
+        window.adminDelete = async function(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return toast('Not found', 'error');
+            if (!confirm(`Delete @${acc.username}?`)) return;
+            const ok = await deleteAccount(id);
+            if (ok) { toast(`🗑️ @${acc.username} deleted`, 'success');
+                applyFilters();
+                renderAdminList();
+                updateStats(); } else toast('❌ Error', 'error');
+        };
+
+        window.rateAccount = async function(id, rating) {
+            const ok = await rateAccount(id, rating);
+            if (ok) { toast(`⭐ Rated ${rating} stars`, 'success');
+                applyFilters(); } else toast('❌ Error', 'error');
+        };
+
+        window.buyAccount = function(id) {
+            const acc = accounts.find(a => a.id === id);
+            if (!acc) return toast('Not found', 'error');
+            if (acc.sold) return toast('Already sold', 'error');
+            toast(`🔄 Redirecting...`, 'success');
+            setTimeout(() => { window.open(REDIRECT_URL, '_blank'); }, 500);
+        };
+
+        window.openTwitterProfile = openTwitterProfile;
+
+        // ============================================================
+        //  SYNC — بهینه‌شده
+        // ============================================================
+        function updateSyncUI() {
+            const dot = document.getElementById('syncDot');
+            const text = document.getElementById('syncText');
+            const count = document.getElementById('accountCount');
+            const live = accounts.filter(a => !a.sold).length;
+            dot.className = 'dot' + (isConnected ? '' : ' offline');
+            text.textContent = isConnected ? '✅ Online' : '❌ Offline';
+            count.textContent = accounts.length + ' · ' + live + ' avail';
+        }
+
+        async function syncLoop() {
+            if (syncLoopRunning) return;
+            syncLoopRunning = true;
+            try {
+                const ok = await loadShopData();
+                if (ok) {
+                    const hash = accounts.map(a =>
+                        a.id + ':' + a.sold + ':' + (a.sold_at || '') + ':' + a.username + ':' + a.followers + ':' + a
+                        .price + ':' + (a.account_created_at || '') + ':' + (a.verified ? '1' : '0') + ':' + (a
+                            .featured ? '1' : '0') + ':' + (a.sale_price ?? '') + ':' + (a.ratings ? a.ratings
+                            .length : '0')
+                    ).join('|');
+                    if (hash !== lastSyncHash) {
+                        lastSyncHash = hash;
+                        applyFilters();
+                        if (adminMode) renderAdminList();
+                        updateStats();
+                        updateSyncUI();
+                    } else {
+                        updateSyncUI();
+                    }
+                } else {
+                    updateSyncUI();
+                }
+            } catch (e) {
+                console.error('syncLoop error:', e);
+                isConnected = false;
+                updateSyncUI();
+            } finally {
+                syncLoopRunning = false;
+            }
+        }
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        (async function init() {
+            populateYearDropdown();
+            await loadShopData();
+            lastSyncHash = accounts.map(a =>
+                a.id + ':' + a.sold + ':' + (a.sold_at || '') + ':' + a.username + ':' + a.followers + ':' + a.price +
+                ':' + (a.account_created_at || '') + ':' + (a.verified ? '1' : '0') + ':' + (a.featured ? '1' : '0') +
+                ':' + (a.sale_price ?? '') + ':' + (a.ratings ? a.ratings.length : '0')
+            ).join('|');
+            applyFilters();
+            updateStats();
+            updateSyncUI();
+
+            // اگه قبلاً تو این session لاگین شده، پنل رو باز کن
+            if (sessionStorage.getItem(ADMIN_SESSION_KEY) === '1') {
+                adminMode = true;
+                showAdminPanel();
+            }
+
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                setTimeout(() => {
+                    overlay.classList.add('hidden');
+                    setTimeout(() => { overlay.style.display = 'none'; }, 600);
+                }, 1800);
+            }
+
+            setInterval(syncLoop, SYNC_INTERVAL);
+
+            setInterval(async () => {
+                const now = ts();
+                let changed = false;
+                for (const acc of accounts) {
+                    if (acc.sold && acc.sold_at && (now - acc.sold_at) > AUTO_DELETE_MINUTES * 60 * 1000) {
+                        await deleteAccount(acc.id);
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    applyFilters();
+                    if (adminMode) renderAdminList();
+                    updateStats();
+                    updateSyncUI();
+                }
+            }, 30000);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                    e.preventDefault();
+                    toggleAdminPanel();
+                }
+            });
+
+            console.log('🐦 Twitter Shop Pro v6 — Optimized (Admin Fixed)');
+        })();
+    </script>
+</body>
+</html>
