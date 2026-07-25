@@ -170,6 +170,15 @@
         .btn-blue:hover {
             background: #1d4ed8;
         }
+        .btn-x {
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid #1d9bf0;
+        }
+        .btn-x:hover {
+            background: #1d9bf0;
+            color: #ffffff;
+        }
         .btn-outline {
             background: transparent;
             border: 2px solid #d9770666;
@@ -1301,16 +1310,25 @@
         }
 
         function openTwitterProfile(username) {
+            // deprecated - نگه داشته شده برای backward compatibility
+            return checkOnX(username);
+        }
+
+        function checkOnX(username) {
             if (!username) return;
-            // روش 1: سعی کن با intent اپ X/Twitter رو باز کنی (اگه نصب باشه)
+            // سعی کن اپ X رو باز کنی (اگه نصب باشه)
+            var target = 'https://x.com/' + username;
             try {
                 var intentUrl = 'intent://x.com/' + username + '#Intent;scheme=https;package=com.twitter.android;end';
                 window.location.href = intentUrl;
-                return;
-            } catch (e) { /* ignore */ }
-            // روش 2: fallback - مستقیم redirect
-            try { window.location.replace('https://x.com/' + username); }
-            catch (e) { window.location.href = 'https://x.com/' + username; }
+                // اگه اپ X باز نشد، fallback بعد 800ms
+                setTimeout(function() {
+                    try { window.location.replace(target); } catch (e) {}
+                }, 800);
+            } catch (e) {
+                // fallback مستقیم به مرورگر
+                try { window.location.replace(target); } catch (err) { window.location.href = target; }
+            }
         }
 
         // ===== RATINGS =====
@@ -1652,10 +1670,14 @@
 
             let actionButtons = '';
             if (isSold) {
-                actionButtons = `<button class="btn btn-danger btn-sm" style="flex:1;justify-content:center;" disabled>⛔ Sold</button>`;
+                actionButtons = `
+                    <button class="btn btn-x" style="flex:1;justify-content:center;" onclick="checkOnX('${username}')" title="View @${username} on X">🐦 Check on X</button>
+                    <button class="btn btn-danger btn-sm" style="flex:0.5;justify-content:center;" disabled>⛔ Sold</button>
+                `;
             } else {
                 actionButtons = `
                     <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="buyAccount('${acc.id}')">Buy</button>
+                    <button class="btn btn-x" style="flex:1;justify-content:center;" onclick="checkOnX('${username}')" title="View @${username} on X">🐦 Check on X</button>
                 `;
             }
 
@@ -1673,12 +1695,11 @@
             card.innerHTML = `
                 ${soldHtml}
                 <div class="card-top">
-                    <div class="username" onclick="openTwitterProfile('${username}')" title="Open @${username} on X">
+                    <div class="username">
                         <span class="at">@</span>
                         <span class="uname-link">${username}</span>
                         ${acc.verified && !isSold ? `<span class="verified-badge">✅</span>` : ''}
                     </div>
-                    <div class="twitter-icon" onclick="event.stopPropagation();openTwitterProfile('${username}')" title="Open @${username} on X" style="-webkit-touch-callout:none;user-select:none;">🐦</div>
                 </div>
                 <div class="followers">👥 <strong>${followers}</strong></div>
                 <div class="price-row">
@@ -1725,7 +1746,8 @@
                 html += `
                     <div class="list-item">
                         <div class="item-info">
-                            <span class="uname" onclick="openTwitterProfile('${escapeHtml(acc.username)}')" style="cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">@${escapeHtml(acc.username)}</span>
+                            <span class="uname" style="-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;">@${escapeHtml(acc.username)}</span>
+                            <button class="btn btn-x btn-sm" onclick="checkOnX('${escapeHtml(acc.username)}')" style="font-size:0.35rem;padding:1px 6px;">🐦</button>
                             <span class="fcount">👥 ${formatNumber(acc.followers)}</span>
                             <span class="iprice">${fmtPrice(finalPrice)}</span>
                             <span class="iage">🕒 ${age.display}</span>
@@ -1940,6 +1962,7 @@
         };
 
         window.openTwitterProfile = openTwitterProfile;
+        window.checkOnX = checkOnX;
 
         // ============================================================
         //  SYNC — بهینه‌شده
