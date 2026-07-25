@@ -8,7 +8,7 @@
     </script>
     <style>
         /* ============================================================
-           LIGHT THEME — ساده، روان، بهینه
+           LIGHT THEME — با بنر اختصاصی و نمایش تاریخ در پس‌زمینه
            ============================================================ */
         :root {
             --bg-body: #f0f4f8;
@@ -341,7 +341,7 @@
         /* ===== SHOP GRID ===== */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
             gap: 10px;
             padding: 10px 16px;
         }
@@ -368,19 +368,23 @@
             color: var(--color-text-muted);
         }
 
-        /* ===== ACCOUNT CARD ===== */
+        /* ===== ACCOUNT CARD با بنر اختصاصی و تاریخ در پس‌زمینه ===== */
         .account-card {
-            background: var(--bg-card);
-            border: 1px solid var(--color-border);
             border-radius: 1rem;
-            padding: 10px 10px 10px 10px;
+            padding: 8px 8px 8px 8px;
             position: relative;
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 2px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
             will-change: transform;
+            overflow: hidden;
+            min-height: 170px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f1f5f9;
+            border: 1px solid var(--color-border);
         }
         .account-card:hover {
             transform: translateY(-3px);
@@ -389,7 +393,6 @@
         }
         .account-card.featured {
             border-color: #7c3aed;
-            background: linear-gradient(160deg, #ffffff 0%, #f5f3ff 100%);
         }
         .account-card.featured::after {
             content: '⭐ FEATURED';
@@ -402,76 +405,111 @@
             font-weight: 700;
             padding: 1px 8px;
             border-radius: 10px;
-            z-index: 2;
+            z-index: 5;
             letter-spacing: 0.3px;
+        }
+
+        /* لایه شیشه‌ای برای خوانایی متن */
+        .card-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 0;
+            border-radius: 1rem;
+            pointer-events: none;
+        }
+
+        /* المان تاریخ در پس‌زمینه (بزرگ و شفاف) */
+        .card-bg-date {
+            position: absolute;
+            bottom: 4px;
+            right: 8px;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: rgba(0, 0, 0, 0.07);
+            z-index: 0;
+            pointer-events: none;
+            line-height: 1;
+            letter-spacing: -1px;
+            white-space: nowrap;
+            user-select: none;
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
         }
 
         .account-card .card-top {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 6px;
             position: relative;
             z-index: 1;
         }
+        .account-card .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            background: #e2e8f0;
+            flex-shrink: 0;
+        }
+        .account-card .avatar-placeholder {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #d97706;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.6rem;
+            flex-shrink: 0;
+            border: 2px solid rgba(255, 255, 255, 0.9);
+        }
         .account-card .username {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             flex-wrap: wrap;
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
             cursor: pointer;
         }
-        .account-card .username .uname-link {
-            color: #0f172a;
-            text-decoration: none;
-            transition: color 0.2s;
-            -webkit-user-select: none;
-            user-select: none;
-            -webkit-touch-callout: none;
-            pointer-events: none;
-        }
         .account-card .username .at {
             color: var(--color-text-muted);
             font-weight: 400;
-            font-size: 0.5rem;
+            font-size: 0.45rem;
         }
-        .account-card .username a {
+        .account-card .username .uname-link {
             color: #0f172a;
             text-decoration: none;
-            transition: color 0.2s;
-        }
-        .account-card .username a:hover {
-            color: #2563eb;
-            text-decoration: underline;
+            pointer-events: none;
         }
         .account-card .username .verified-badge {
             color: #2563eb;
-            font-size: 0.6rem;
-        }
-        .account-card .twitter-icon {
-            font-size: 1rem;
-            color: #1d9bf0;
-            cursor: pointer;
-            transition: transform 0.2s;
-            opacity: 0.6;
-        }
-        .account-card .twitter-icon:hover {
-            transform: scale(1.1);
-            opacity: 1;
+            font-size: 0.5rem;
         }
 
         .account-card .followers {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             color: var(--color-text-dim);
             display: flex;
             align-items: center;
             gap: 3px;
-            position: relative;
-            z-index: 1;
         }
         .account-card .followers strong {
             color: var(--color-text);
@@ -481,37 +519,35 @@
         .account-card .price-row {
             display: flex;
             align-items: center;
-            gap: 5px;
-            position: relative;
-            z-index: 1;
+            gap: 4px;
             flex-wrap: wrap;
         }
         .account-card .price-tag {
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 900;
             color: #059669;
         }
         .account-card .price-tag .currency {
-            font-size: 0.5rem;
+            font-size: 0.45rem;
             color: var(--color-text-muted);
             font-weight: 400;
         }
         .account-card .price-tag.sale-price {
             color: #dc2626;
             text-decoration: line-through;
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             opacity: 0.5;
         }
         .account-card .price-tag.sale-new {
             color: #d97706;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
         .account-card .sale-badge {
             background: linear-gradient(135deg, #dc2626, #b91c1c);
             color: #fff;
-            font-size: 0.35rem;
+            font-size: 0.3rem;
             font-weight: 700;
-            padding: 1px 6px;
+            padding: 1px 5px;
             border-radius: 8px;
             animation: pulse-sale 1.5s ease-in-out infinite;
         }
@@ -526,13 +562,11 @@
         }
 
         .account-card .age-info {
-            font-size: 0.4rem;
+            font-size: 0.35rem;
             color: var(--color-text-muted);
             display: flex;
             align-items: center;
             gap: 3px;
-            position: relative;
-            z-index: 1;
             flex-wrap: wrap;
         }
         .account-card .age-info .label {
@@ -546,9 +580,7 @@
         .account-card .stars {
             display: flex;
             gap: 2px;
-            font-size: 0.55rem;
-            position: relative;
-            z-index: 1;
+            font-size: 0.5rem;
         }
         .account-card .stars .star {
             color: #d1d5db;
@@ -563,7 +595,7 @@
             transform: scale(1.15);
         }
         .account-card .stars .count {
-            font-size: 0.4rem;
+            font-size: 0.35rem;
             color: var(--color-text-muted);
             margin-left: 2px;
         }
@@ -571,18 +603,16 @@
         .account-card .card-actions {
             display: flex;
             gap: 3px;
-            margin-top: 3px;
-            position: relative;
-            z-index: 1;
+            margin-top: 2px;
             flex-wrap: wrap;
         }
         .account-card .card-actions .btn {
             flex: 1;
             justify-content: center;
-            padding: 3px 4px;
-            font-size: 0.5rem;
-            min-width: 28px;
-            border-radius: 16px;
+            padding: 2px 4px;
+            font-size: 0.45rem;
+            min-width: 24px;
+            border-radius: 14px;
         }
 
         .account-card .sold-badge {
@@ -593,22 +623,22 @@
             color: #fff;
             padding: 1px 8px;
             border-radius: 12px;
-            font-size: 0.4rem;
+            font-size: 0.35rem;
             font-weight: 700;
-            z-index: 4;
+            z-index: 6;
             border: 1px solid rgba(220, 38, 38, 0.3);
         }
         .account-card .sold-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(2px);
-            z-index: 3;
+            z-index: 5;
             border-radius: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 900;
             color: #dc2626;
             letter-spacing: 1px;
@@ -620,12 +650,10 @@
             border: 2px solid rgba(220, 38, 38, 0.15);
         }
         .account-card .sold-timer {
-            font-size: 0.4rem;
+            font-size: 0.35rem;
             color: #dc2626;
             opacity: 0.6;
             margin-top: 1px;
-            position: relative;
-            z-index: 1;
         }
 
         /* ===== ADMIN PANEL ===== */
@@ -942,7 +970,7 @@
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .shop-grid {
-                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
         @media (max-width: 700px) {
@@ -956,7 +984,7 @@
                 font-size: 0.4rem;
             }
             .shop-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
                 padding: 8px 10px;
                 gap: 8px;
             }
@@ -986,7 +1014,7 @@
                 padding: 0.6rem 0.8rem;
             }
             .account-card .price-tag {
-                font-size: 0.85rem;
+                font-size: 0.75rem;
             }
             .filter-bar {
                 padding: 6px 10px;
@@ -1013,10 +1041,16 @@
             .stats-bar .stat-item .stat-label {
                 font-size: 0.3rem;
             }
+            .account-card {
+                min-height: 150px;
+            }
+            .card-bg-date {
+                font-size: 1.8rem;
+            }
         }
         @media (max-width: 450px) {
             .shop-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
                 gap: 6px;
                 padding: 6px 8px;
             }
@@ -1029,19 +1063,20 @@
             }
             .account-card {
                 padding: 6px 6px 6px 6px;
+                min-height: 130px;
             }
             .account-card .username {
-                font-size: 0.65rem;
+                font-size: 0.6rem;
             }
             .account-card .price-tag {
-                font-size: 0.75rem;
+                font-size: 0.7rem;
             }
             .account-card .card-actions .btn {
-                font-size: 0.4rem;
+                font-size: 0.35rem;
                 padding: 2px 3px;
             }
             .account-card .stars {
-                font-size: 0.45rem;
+                font-size: 0.4rem;
             }
             .filter-bar input,
             .filter-bar select {
@@ -1059,6 +1094,9 @@
             }
             .stats-bar .stat-item .stat-val {
                 font-size: 0.6rem;
+            }
+            .card-bg-date {
+                font-size: 1.4rem;
             }
         }
         @media (prefers-reduced-motion: reduce) {
@@ -1084,7 +1122,7 @@
         <div class="loader-bar-track">
             <div class="loader-bar-fill"></div>
         </div>
-        <div class="loader-version">v6 · Optimized</div>
+        <div class="loader-version">v6 · بنر + تاریخ در پس‌زمینه</div>
     </div>
 
     <!-- ===== MAIN APP ===== -->
@@ -1243,7 +1281,6 @@
             return Number(n).toLocaleString('en-US');
         }
 
-        // فرمت قیمت: اگه عدد صحیح باشه $15، در غیر این صورت $15.50
         function fmtPrice(n) {
             const v = Number(n) || 0;
             if (Number.isInteger(v)) return '$' + v;
@@ -1290,6 +1327,11 @@
             return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         }
 
+        function formatYear(tsVal) {
+            if (!tsVal) return '';
+            return new Date(tsVal).getFullYear().toString();
+        }
+
         function toTimestampFromMonthYear(month, year) {
             if (!month || !year) return ts();
             const d = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, 1));
@@ -1309,40 +1351,24 @@
             }
         }
 
-        function openTwitterProfile(username) {
-            // deprecated - نگه داشته شده برای backward compatibility
-            return checkOnX(username);
-        }
-
         function checkOnX(username) {
             if (!username) return;
-            var target = 'https://x.com/' + username;
-
-            // روش 1: اگه داخل Telegram WebApp هستیم، از API تلگرام استفاده کن
+            const target = 'https://x.com/' + username;
             if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openLink === 'function') {
-                try {
-                    window.Telegram.WebApp.openLink(target);
-                    return;
-                } catch (e) { /* fallthrough */ }
+                try { window.Telegram.WebApp.openLink(target); return; } catch (e) { /* fallthrough */ }
             }
-
-            // روش 2: استفاده از anchor با target="_blank" که در اکثر WebViewها کار میکنه
             try {
-                var a = document.createElement('a');
+                const a = document.createElement('a');
                 a.href = target;
                 a.target = '_blank';
                 a.rel = 'noopener,noreferrer';
-                // بعضی از WebAppها نیاز به append شدن به DOM دارن
                 a.style.display = 'none';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
                 return;
             } catch (e) { /* fallthrough */ }
-
-            // روش 3: fallback نهایی
-            try { window.location.replace(target); }
-            catch (err) { window.location.href = target; }
+            try { window.location.replace(target); } catch (err) { window.location.href = target; }
         }
 
         // ===== RATINGS =====
@@ -1355,6 +1381,26 @@
         function getFinalPrice(acc) {
             return acc.sale_price !== null && acc.sale_price !== undefined && acc.sale_price > 0 ? acc.sale_price : acc
                 .price || 0;
+        }
+
+        // ===== ساخت URL تصاویر =====
+        function getAvatarUrl(username) {
+            return 'https://unavatar.io/twitter/' + encodeURIComponent(username) + '?fallback=false';
+        }
+
+        function getBannerUrl(username) {
+            return 'https://unavatar.io/twitter/' + encodeURIComponent(username) + '/banner';
+        }
+
+        // ===== تولید گرادیان منحصربه‌فرد بر اساس نام کاربری (fallback) =====
+        function getUsernameGradient(username) {
+            let hash = 0;
+            for (let i = 0; i < username.length; i++) {
+                hash = username.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const hue1 = Math.abs(hash % 360);
+            const hue2 = (hue1 + 60) % 360;
+            return `linear-gradient(135deg, hsl(${hue1}, 70%, 80%) 0%, hsl(${hue2}, 70%, 70%) 100%)`;
         }
 
         // ============================================================
@@ -1565,7 +1611,6 @@
                 }
             });
 
-            // Debounced render
             if (renderTimeout) cancelAnimationFrame(renderTimeout);
             renderTimeout = requestAnimationFrame(() => {
                 renderShop();
@@ -1607,7 +1652,7 @@
         }
 
         // ============================================================
-        //  RENDER — بهینه‌شده با DocumentFragment
+        //  RENDER — با بنر اختصاصی و تاریخ بزرگ در پس‌زمینه
         // ============================================================
         function renderShop() {
             const grid = document.getElementById('shopGrid');
@@ -1626,7 +1671,6 @@
                 return;
             }
 
-            // استفاده از DocumentFragment برای رندرینگ سریع‌تر
             const fragment = document.createDocumentFragment();
             display.forEach(acc => {
                 const card = createCardElement(acc);
@@ -1647,13 +1691,37 @@
             const isSale = acc.sale_price !== null && acc.sale_price !== undefined && acc.sale_price > 0 && !isSold;
             const age = getAccountAge(acc.account_created_at);
             const createdDate = formatDate(acc.account_created_at);
+            const yearOnly = formatYear(acc.account_created_at);
             const avgRating = getAverageRating(acc);
+
+            const avatarUrl = getAvatarUrl(acc.username);
+            const bannerUrl = getBannerUrl(acc.username);
+            const fallbackGradient = getUsernameGradient(acc.username);
 
             const card = document.createElement('div');
             card.className = 'account-card' + (acc.featured && !isSold ? ' featured' : '');
             card.dataset.id = acc.id;
 
-            // ساخت HTML با innerHTML برای سرعت بیشتر
+            // تنظیم بنر به عنوان background-image، با fallback گرادیان
+            card.style.backgroundImage = `url('${bannerUrl}'), ${fallbackGradient}`;
+            card.style.backgroundSize = 'cover, cover';
+            card.style.backgroundPosition = 'center, center';
+            card.style.backgroundColor = '#f1f5f9';
+
+            // لایه شیشه‌ای
+            const overlay = document.createElement('div');
+            overlay.className = 'card-bg-overlay';
+
+            // المان تاریخ در پس‌زمینه (بزرگ و شفاف)
+            const bgDate = document.createElement('div');
+            bgDate.className = 'card-bg-date';
+            bgDate.textContent = yearOnly || '';
+
+            // محتوای کارت
+            const content = document.createElement('div');
+            content.className = 'card-content';
+
+            // ستاره‌ها
             let starsHtml = '';
             const full = Math.floor(avgRating);
             for (let i = 1; i <= 5; i++) {
@@ -1706,14 +1774,24 @@
                 `;
             }
 
-            card.innerHTML = `
-                ${soldHtml}
-                <div class="card-top">
-                    <div class="username">
+            // آواتار
+            const avatarHtml = `
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:1px;">
+                    <img src="${avatarUrl}" alt="@${username}" class="avatar" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                    <div class="avatar-placeholder" style="display:none;">${username.charAt(0).toUpperCase()}</div>
+                    <span class="username">
                         <span class="at">@</span>
                         <span class="uname-link">${username}</span>
                         ${acc.verified && !isSold ? `<span class="verified-badge">✅</span>` : ''}
-                    </div>
+                    </span>
+                </div>
+            `;
+
+            content.innerHTML = `
+                ${soldHtml}
+                <div class="card-top">
+                    ${avatarHtml}
                 </div>
                 <div class="followers">👥 <strong>${followers}</strong></div>
                 <div class="price-row">
@@ -1735,6 +1813,11 @@
                     ${adminButtons}
                 </div>
             `;
+
+            // اضافه کردن المان‌ها به کارت
+            card.appendChild(overlay);
+            card.appendChild(bgDate);
+            card.appendChild(content);
 
             return card;
         }
@@ -1786,14 +1869,13 @@
         //  UI ACTIONS
         // ============================================================
         function openAdminPanel() {
-            // اگه قبلاً لاگین شده، مستقیم باز کن
             if (sessionStorage.getItem(ADMIN_SESSION_KEY) === '1') {
                 adminMode = true;
                 showAdminPanel();
                 return;
             }
             const pw = prompt('🔐 Enter admin password:');
-            if (pw === null) return; // کنسل
+            if (pw === null) return;
             if (pw !== ADMIN_PASSWORD) {
                 toast('Incorrect password', 'error');
                 return;
@@ -1975,11 +2057,10 @@
             setTimeout(() => { window.open(REDIRECT_URL, '_blank'); }, 500);
         };
 
-        window.openTwitterProfile = openTwitterProfile;
         window.checkOnX = checkOnX;
 
         // ============================================================
-        //  SYNC — بهینه‌شده
+        //  SYNC
         // ============================================================
         function updateSyncUI() {
             const dot = document.getElementById('syncDot');
@@ -2039,7 +2120,6 @@
             updateStats();
             updateSyncUI();
 
-            // اگه قبلاً تو این session لاگین شده، پنل رو باز کن
             if (sessionStorage.getItem(ADMIN_SESSION_KEY) === '1') {
                 adminMode = true;
                 showAdminPanel();
@@ -2079,7 +2159,7 @@
                 }
             });
 
-            console.log('🐦 Twitter Shop Pro v6 — Optimized (Admin Fixed)');
+            console.log('🐦 Twitter Shop Pro v6 — بنر + تاریخ در پس‌زمینه');
         })();
     </script>
 </body>
