@@ -1289,7 +1289,8 @@
 
         function openTwitterProfile(username) {
             if (!username) return;
-            window.open(`https://x.com/${username}`, '_blank');
+            // مستقیم تو همون صفحه redirect کن تا context menu مرورگر باز نشه
+            window.location.replace('https://x.com/' + username);
         }
 
         // ===== RATINGS =====
