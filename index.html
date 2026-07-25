@@ -1317,14 +1317,32 @@
         function checkOnX(username) {
             if (!username) return;
             var target = 'https://x.com/' + username;
-            // ساده‌ترین روش: window.open که خودِ WebView هندل میکنه
-            // تو WebView معمولی → تو browser باز میشه
-            // تو اپ‌هایی که universal link ساپورت میکنن → مستقیم اپ X باز میشه
-            try {
-                window.open(target, '_blank', 'noopener,noreferrer');
-            } catch (e) {
-                try { window.location.replace(target); } catch (err) { window.location.href = target; }
+
+            // روش 1: اگه داخل Telegram WebApp هستیم، از API تلگرام استفاده کن
+            if (window.Telegram && window.Telegram.WebApp && typeof window.Telegram.WebApp.openLink === 'function') {
+                try {
+                    window.Telegram.WebApp.openLink(target);
+                    return;
+                } catch (e) { /* fallthrough */ }
             }
+
+            // روش 2: استفاده از anchor با target="_blank" که در اکثر WebViewها کار میکنه
+            try {
+                var a = document.createElement('a');
+                a.href = target;
+                a.target = '_blank';
+                a.rel = 'noopener,noreferrer';
+                // بعضی از WebAppها نیاز به append شدن به DOM دارن
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                return;
+            } catch (e) { /* fallthrough */ }
+
+            // روش 3: fallback نهایی
+            try { window.location.replace(target); }
+            catch (err) { window.location.href = target; }
         }
 
         // ===== RATINGS =====
